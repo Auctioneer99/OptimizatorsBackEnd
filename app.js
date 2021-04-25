@@ -12,10 +12,7 @@ import authRoutes from "./routes/Authorization.js";
 import credentials from "./credentials.js";
 
 const app = express();
-const server = http.Server(app, (req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.send("it is running\n");
-});
+const server = http.Server(app);
 
 app.use(express.static("./public"));
 app.use(cors());
@@ -32,8 +29,7 @@ mongoose
   })
   .then(() => {
     console.log("MongoDB Connected");
-    server.listen(
-      credentials.server.PORT,
+    server.listen(process.env.PORT || credentials.server.PORT, () =>
       console.log(`Server started on port ${credentials.server.PORT}`)
     );
   })
