@@ -3,8 +3,11 @@ const credentials = {
     PORT: 2500,
   },
   mongo: {
-    CONNECT_URL:
-      "mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false",
+    database: "optimizators",
+    user: "auctioneer",
+    password: "QYkmfsAdOa3Z7p9e",
+    CONNECT_URL: () =>
+      `mongodb+srv://${credentials.mongo.user}:${credentials.mongo.password}@cluster0.r2smc.mongodb.net/${credentials.mongo.database}?retryWrites=true&w=majority`,
   },
   auth: {
     ACCESS_SECRET: "analtoy",

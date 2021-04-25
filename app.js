@@ -12,7 +12,7 @@ import authRoutes from "./routes/Authorization.js";
 import credentials from "./credentials.js";
 
 mongoose
-  .connect(credentials.mongo.CONNECT_URL, {
+  .connect(credentials.mongo.CONNECT_URL(), {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
