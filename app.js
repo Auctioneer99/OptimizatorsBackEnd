@@ -12,7 +12,10 @@ import authRoutes from "./routes/Authorization.js";
 import credentials from "./credentials.js";
 
 const app = express();
-const server = http.Server(app);
+const server = http.Server(app, (req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.send("it is running\n");
+});
 
 app.use(express.static("./public"));
 app.use(cors());
