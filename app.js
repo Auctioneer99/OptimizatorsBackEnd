@@ -1,16 +1,18 @@
-const express = require("express");
-const http = require("http");
-const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser")();
+import "core-js";
+import "regenerator-runtime";
+import express from "express";
+import http from "http";
+import mongoose from "mongoose";
+import cookieParser from "cookie-parser";
+import cors from "cors";
 
-const auth = require("./middleware/JWTAuthorizer.js");
-
-let credentials = {
-  MONGO_CONNECT = ""
-}
+import authorizer from "./middleware/JWTAuthorizer.js";
+import mainRoutes from "./routes/Main.js";
+import authRoutes from "./routes/Authorization.js";
+import credentials from "./credentials.js";
 
 mongoose
-  .connect(credentials.MONGO_CONNECT, {
+  .connect(credentials.mongo.CONNECT_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -20,11 +22,15 @@ mongoose
 const app = express();
 const server = http.Server(app);
 
-app.use(require("./routes/router.js"));
-app.use(express.static(__dirname + "/public"));
-app.use(cookieParser);
-app.use(auth);
+app.use(express.static("./public"));
+app.use(cors());
+app.use(cookieParser());
+app.use(authorizer);
 
-const PORT = 2500;
+app.use(authRoutes);
+app.use(mainRoutes);
 
-server.listen(PORT, console.log(`Server started on port ${PORT}`));
+server.listen(
+  credentials.server.PORT,
+  console.log(`Server started on port ${credentials.server.PORT}`)
+);

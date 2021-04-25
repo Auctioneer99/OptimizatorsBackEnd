@@ -1,15 +1,7 @@
-import "node-jwt-auth";
+import Auth from "node-jwt-auth";
+import credentials from "../credentials.js";
 
-const ACCESS_SECRET = "analtoy";
-const REFRESH_SECRET = "gayorgy";
-
-const auth = new Auth({
-  accessSecret: ACCESS_SECRET,
-  refreshSecret: REFRESH_SECRET,
-  mapUserToPayload,
-  mapUserToHashed,
-  mapPayloadToUser,
-});
+const { ACCESS_SECRET, REFRESH_SECRET } = credentials.auth;
 
 const mapUserToPayload = (user) => {
   return {
@@ -21,7 +13,7 @@ const mapUserToHashed = (user) => {
   return user.password;
 };
 
-const mapPayloadToUser = (payload) => {
+const mapPayloadToUser = async (payload) => {
   const user = {
     login: payload.login,
   };
@@ -29,4 +21,12 @@ const mapPayloadToUser = (payload) => {
   return user;
 };
 
-module.exports = auth;
+const auth = new Auth.default({
+  accessSecret: ACCESS_SECRET,
+  refreshSecret: REFRESH_SECRET,
+  mapUserToPayload,
+  mapUserToHashed,
+  mapPayloadToUser,
+});
+
+export default auth;

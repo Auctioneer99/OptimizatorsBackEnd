@@ -1,5 +1,7 @@
-const { ObjectId } = require("mongodb");
-const mongoose = require("mongoose");
+import mongodb from "mongodb";
+import mongoose from "mongoose";
+
+const { ObjectId } = mongodb;
 
 let UserSchema = new mongoose.Schema({
   _id: {
@@ -21,6 +23,6 @@ let UserSchema = new mongoose.Schema({
   },
 });
 
-let User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", UserSchema);
 
-module.exports = User;
+export default User;
