@@ -29,8 +29,7 @@ mongoose
   })
   .then(() => {
     console.log("MongoDB Connected");
-    server.listen(process.env.PORT || credentials.server.PORT, () =>
-      console.log(`Server started on port ${credentials.server.PORT}`)
-    );
+    let port = process.env.PORT || credentials.server.PORT;
+    server.listen(port, () => console.log(`Server started on port ${port}`));
   })
   .catch((err) => console.log(err));
