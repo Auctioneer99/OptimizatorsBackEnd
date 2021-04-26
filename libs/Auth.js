@@ -1,3 +1,5 @@
+import "core-js";
+import "regenerator-runtime";
 import Auth from "node-jwt-auth";
 import credentials from "../credentials.js";
 
@@ -5,7 +7,9 @@ const { ACCESS_SECRET, REFRESH_SECRET } = credentials.auth;
 
 const mapUserToPayload = (user) => {
   return {
-    login: user.login,
+    user: {
+      login: user.login,
+    },
   };
 };
 
@@ -13,9 +17,9 @@ const mapUserToHashed = (user) => {
   return user.password;
 };
 
-const mapPayloadToUser = async (payload) => {
+const mapPayloadToUser = (payload) => {
   const user = {
-    login: payload.login,
+    login: payload.user.login,
   };
 
   return user;

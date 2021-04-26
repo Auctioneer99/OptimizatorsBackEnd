@@ -1,13 +1,9 @@
-import mongodb from "mongodb";
+//import mongodb from "mongodb";
 import mongoose from "mongoose";
 
-const { ObjectId } = mongodb;
+//const { ObjectId } = mongodb;
 
 let UserSchema = new mongoose.Schema({
-  _id: {
-    type: ObjectId,
-    required: true,
-  },
   login: {
     type: String,
     required: true,

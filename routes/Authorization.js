@@ -8,81 +8,113 @@ import auth from "../libs/Auth.js";
 const router = express.Router();
 
 const { ACCESS_TOKEN_ALIVE, REFRESH_TOKEN_ALIVE } = credentials.auth;
+const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
-router.post("/login", login);
-router.post("/register", register);
-router.post("/logout", logOut);
+router.post("/login", notAuthorized, loginUser);
+router.post("/register", notAuthorized, register);
+router.post("/logout", authorized, logOut);
 
-function login(req, res) {
-  const { login, password } = req.body;
-
-  let errors = [];
-
-  if (!login || !password) {
-    errors.push({ msg: "Please enter all fields" });
-  }
-
-  if (errors.length > 0) {
-    handleError(errors, res);
+function authorized(req, res, next) {
+  if (req.user) {
+    next();
   } else {
-    if (login == "Ris" && password == "ris") {
-      user = {
-        login: "Ris",
-      };
-      setCookies(user, res).status(200).json({
-        message: "Success",
-      });
-    } else {
-      errors.push({ msg: "User not found" });
-      handleError(errors, res);
-    }
+    res.status(401).json({
+      message: "Not authorized",
+    });
   }
 }
 
-function register(req, res) {
-  const { login, email, password } = req.body;
-
-  let errors = [];
-
-  if (!login || !email || !password) {
-    errors.push({ msg: "Please enter all fields" });
-  }
-
-  if (password.length < 6) {
-    errors.push({ msg: "Password must be at least 6 characters" });
-  }
-
-  if (errors.length > 0) {
-    handleError(errors, res);
+function notAuthorized(req, res, next) {
+  if (!req.user) {
+    next();
   } else {
-    User.findOne({ email: email }).then((user) => {
-      if (user) {
-        errors.push({ msg: "Email already exists" });
-        handleError(errors, res);
-      } else {
-        bcrypt.genSalt(10, (err, salt) => {
-          bcrypt.hash(password, salt, (err, hash) => {
-            if (err) throw err;
-
-            const newUser = new User({
-              login: login,
-              email: email,
-              password: hash,
-            });
-
-            newUser
-              .save()
-              .then((user) => {
-                setCookies(user, res).status(200).json({
-                  message: "Registered",
-                });
-              })
-              .catch((err) => console.log(err));
-          });
-        });
-      }
+    res.status(403).json({
+      message: "Already authorized",
     });
   }
+}
+
+function loginUser(req, res) {
+  let errors = [];
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      errors.push({ msg: "Please enter all fields" });
+    }
+
+    if (errors.length == 0) {
+      User.findOne({ email: email }).then((user) => {
+        if (user) {
+          bcrypt.compare(password, user.password).then((same) => {
+            if (same) {
+              setCookies(user, res).status(200).json({
+                message: "Success",
+              });
+            } else {
+              errors.push({ msg: "Incorrect password" });
+            }
+          });
+        } else {
+          errors.push({ msg: "User not found" });
+        }
+      });
+    }
+  } catch {
+    errors.push({ msg: "Please enter all fields" });
+  }
+  handleError(errors, res);
+}
+
+function register(req, res) {
+  let errors = [];
+  try {
+    const { login, email, password } = req.body;
+    if (!email || !login || !password) {
+      errors.push({ msg: "Incorrect format" });
+    } else {
+      if (password.length < 6) {
+        errors.push({ msg: "Password must be at least 6 characters" });
+      }
+      if (login.length < 6) {
+        errors.push({ msg: "Login must be at least 6 characters" });
+      }
+      if (email.match(emailPattern)) {
+        errors.push({ msg: "Not valid email" });
+      }
+    }
+    if (errors.length == 0) {
+      User.findOne({ email: email }).then((user) => {
+        if (user) {
+          errors.push({ msg: "Email already exists" });
+        } else {
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(password, salt, (err, hash) => {
+              if (err) throw err;
+
+              const newUser = new User({
+                login: login,
+                email: email,
+                password: hash,
+              });
+
+              newUser
+                .save()
+                .then((user) => {
+                  setCookies(user, res).status(200).json({
+                    message: "Registered",
+                  });
+                })
+                .catch((err) => console.log(err));
+            });
+          });
+        }
+      });
+    }
+  } catch {
+    errors.push({ msg: "Please enter all fields" });
+  }
+  handleError(errors, res);
 }
 
 function logOut(req, res) {
@@ -92,9 +124,11 @@ function logOut(req, res) {
 }
 
 function handleError(errors, res) {
-  res.status(400).json({
-    errors: errors,
-  });
+  if (errors.length > 0) {
+    res.status(400).json({
+      errors: errors,
+    });
+  }
 }
 
 function setCookies(user, res) {

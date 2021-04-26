@@ -2,45 +2,13 @@ import express from "express";
 
 const router = express.Router();
 
-router.post("/profile", getProfile);
-router.post("/game");
-router.post("/game/:id", getGameInfo);
+router.post("/user", getUserProfile);
 router.get("/", getDefault);
 
-function getProfile(req, res) {
+function getUserProfile(req, res) {
   res.status(200).json({
     name: "Some name",
     games: [],
-  });
-}
-
-function getGameInfo(req, res) {
-  let gameId = req.params.id;
-
-  let game = {
-    id: gameId,
-    name: "some name",
-    createdAt: "",
-    updatedAt: "",
-  };
-
-  res.status(200).json({
-    game: game,
-  });
-}
-
-function createGame(req, res) {
-  let { name } = req.body;
-  let game = {
-    id: 0,
-    name: name,
-    createdAt: Date.now(),
-    updatedAt: Date.now(),
-  };
-
-  res.status(200).json({
-    game: game,
-    connectUrl: "undefined",
   });
 }
 

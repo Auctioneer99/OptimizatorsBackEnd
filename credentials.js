@@ -1,6 +1,7 @@
 const credentials = {
   server: {
     PORT: 2500,
+    ALLOWED_ORIGINS: [],
   },
   mongo: {
     database: "optimizators",
@@ -14,6 +15,9 @@ const credentials = {
     REFRESH_SECRET: "gayorgy",
     ACCESS_TOKEN_ALIVE: 2 * 60 * 60 * 1000,
     REFRESH_TOKEN_ALIVE: 24 * 60 * 60 * 1000,
+  },
+  game: {
+    MAX_GAMES_COUNT: 5,
   },
 };
 
