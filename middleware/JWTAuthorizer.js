@@ -7,8 +7,6 @@ function cookieAuthorize(req, res, next) {
   let authToken = req.cookies.Authorization;
   let refreshToken = req.cookies.Refresh;
 
-  console.log("incoming with \n" + authToken + "\n" + refreshToken);
-
   if (!authToken && !refreshToken) {
     next();
     return;
@@ -17,12 +15,10 @@ function cookieAuthorize(req, res, next) {
   if (authToken && refreshToken) {
     verifyAccessToken(req, res).then(
       (_) => {
-        console.log("verifyAccessToken then");
         next();
         return;
       },
       (err) => {
-        console.log("verifyAccessToken err");
         next();
         return;
       }
@@ -31,12 +27,10 @@ function cookieAuthorize(req, res, next) {
     if (refreshToken) {
       updateAccessToken(req, res).then(
         (_) => {
-          console.log("updateAccessToken then");
           cookieAuthorize(req, res, next);
           return;
         },
         (err) => {
-          console.log("updateAccessToken err");
           next();
           return;
         }
@@ -50,7 +44,11 @@ function updateAccessToken(req, res) {
     let refreshToken = req.cookies.Refresh;
     auth.refreshAccessToken(refreshToken).then(
       (token) => {
-        res.cookie("Authorization", token);
+        res.cookie("Authorization", token, {
+          maxAge: REFRESH_TOKEN_ALIVE,
+          httpOnly: true,
+          sameSite: true,
+        });
         resolve(token);
       },
       (err) => {
