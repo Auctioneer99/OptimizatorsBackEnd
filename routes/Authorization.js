@@ -40,7 +40,7 @@ function loginUser(req, res) {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      errors.push({ msg: "Please enter all fields" });
+      errors.push({ msg: "Please enter all fields", body: req.body });
     }
 
     if (errors.length == 0) {
