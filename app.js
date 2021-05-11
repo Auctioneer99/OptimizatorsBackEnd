@@ -25,7 +25,7 @@ app.use(
     methods: "GET, POST",
   })
 );
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ extended: true }));
 app.use(cookieParser());
 app.use(authorizer);
 
