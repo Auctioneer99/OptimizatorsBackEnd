@@ -44,7 +44,7 @@ function loginUser(req, res) {
     }
 
     if (errors.length == 0) {
-      User.findOne({ email: email }).then((user) => {
+      User.findOne({ email: email }).then((user, err) => {
         if (user) {
           bcrypt.compare(password, user.password).then((same) => {
             if (same) {
@@ -57,6 +57,7 @@ function loginUser(req, res) {
           });
         } else {
           errors.push({ msg: "User not found" });
+          errors.push({ msg: err });
         }
       }).then(() => handleError(errors, res));
     }
