@@ -58,7 +58,7 @@ function loginUser(req, res) {
         } else {
           errors.push({ msg: "User not found" });
         }
-      }).then(() => handleError(errors, res); );
+      }).then(() => handleError(errors, res));
     }
   } catch {
     errors.push({ msg: "Please enter all fields" });
