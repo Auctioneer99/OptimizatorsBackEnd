@@ -53,6 +53,7 @@ function loginUser(req, res) {
               });
             } else {
               errors.push({ msg: "Incorrect password" });
+              handleError(errors, res);
             }
           });
         } else {
