@@ -1,7 +1,6 @@
 import express from "express";
-import User from "../Models/User.js";
 
-import { authorized, notAuthorized } from "./AuthHelper";
+import { authorized, notAuthorized } from "./AuthHelper.js";
 
 const router = express.Router();
 router.use(authorized);

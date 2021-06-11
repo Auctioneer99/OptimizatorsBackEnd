@@ -5,7 +5,7 @@ import credentials from "../credentials.js";
 import User from "../Models/User.js";
 import auth from "../libs/Auth.js";
 
-import { authorized, notAuthorized } from "./AuthHelper";
+import { authorized, notAuthorized } from "./AuthHelper.js";
 
 const router = express.Router();
 

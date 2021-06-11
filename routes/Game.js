@@ -1,7 +1,7 @@
 import express from "express";
 
 import Game from "../Models/Game.js";
-import { authorized } from "./AuthHelper";
+import { authorized } from "./AuthHelper.js";
 
 const router = express.Router();
 
