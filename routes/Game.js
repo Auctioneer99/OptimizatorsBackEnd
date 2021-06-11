@@ -5,7 +5,9 @@ import authHelper from "./AuthHelper.js";
 
 const router = express.Router();
 
-router.post("/create", authHelper.authorized, createGame);
+router.post("/create", authHelper.authorized, create);
+router.post("/delete", authHelper.authorized, remove);
+router.post("/update", authHelper.authorized, update);
 router.post("/:id/xml", getGameInfoXML);
 router.post("/:id", getGameInfo);
 
@@ -16,7 +18,7 @@ function getGameInfoXML(req, res) {
 function getGameInfo(req, res) {
   let gameId = req.params.id;
 
-  Game.findOne({ id: gameId })
+  Game.findById(gameId)
     .then((game) => {
       res.status(200).json({
         message: "Success",
@@ -32,10 +34,7 @@ function getGameInfo(req, res) {
     });
 }
 
-function createGame(req, res) {
-  console.log(req.body);
-  console.log(req.user);
-
+function create(req, res) {
   const newGame = new Game({
     creator: req.user.user.id,
     gameState: req.body,
@@ -54,6 +53,44 @@ function createGame(req, res) {
     .catch((err) => {
       console.log(err);
       res.status(400).json({ message: "Failed to create game" });
+    });
+}
+
+function remove(req, res) {
+  Game.findOneAndDelete({
+    _id: req.body.id,
+    creator: req.user.user.id,
+  })
+    .then((response) => {
+      res.status(200).json({
+        message: "Deleted",
+        game: response,
+      });
+    })
+    .catch((error) => {
+      console.log(err);
+      res.status(400).json({ message: "Failed to delete game", error: error });
+    });
+}
+
+function update(req, res) {
+  req.body.updatedAt = Date.now();
+  Game.findOneAndUpdate(
+    {
+      _id: req.body.id,
+      creator: req.user.user.id,
+    },
+    req.body
+  )
+    .then((response) => {
+      res.status(200).json({
+        message: "Updated",
+        game: response,
+      });
+    })
+    .catch((error) => {
+      console.log(err);
+      res.status(400).json({ message: "Failed to update game", error: error });
     });
 }
 
