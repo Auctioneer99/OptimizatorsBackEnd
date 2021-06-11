@@ -16,13 +16,68 @@ router.post("/login", authHelper.notAuthorized, loginUser);
 router.post("/register", authHelper.notAuthorized, register);
 router.post("/logout", authHelper.authorized, logOut);
 
+/*
+let routes = [
+  {
+    description: "Авторизация",
+    path: "/auth/login",
+    requires: {
+      not authorized
+    },
+    accept: {
+      email: String,
+      password: String
+    },
+    returns: {
+      message: String,
+      errors: {
+        message: String
+      },
+    },
+  },
+  {
+    description: "Выход пользователя",
+    path: "/auth/logout",
+    requires: {
+      authorization
+    },
+    accept: {
+    },
+    returns: {
+      message: String,
+      errors: {
+        message: String
+      },
+    },
+  },
+  {
+    description: "Регистрация",
+    path: "/auth/register",
+    requires: {
+      not authorized
+    },
+    accept: {
+      login: String,
+      email: String,
+      password: String
+    },
+    returns: {
+      message: String,
+      errors: {
+        message: String
+      },
+    },
+  },
+];
+*/
+
 function loginUser(req, res) {
   let errors = [];
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      errors.push({ msg: "Please enter all fields", body: req.body });
+      errors.push({ message: "Please enter all fields", body: req.body });
     }
 
     if (errors.length == 0) {
@@ -35,19 +90,19 @@ function loginUser(req, res) {
                   message: "Success",
                 });
               } else {
-                errors.push({ msg: "Incorrect password" });
+                errors.push({ message: "Incorrect password" });
                 handleError(errors, res);
               }
             });
           } else {
-            errors.push({ msg: "User not found" });
-            errors.push({ msg: err });
+            errors.push({ message: "User not found" });
+            errors.push({ message: err });
           }
         })
         .then(() => handleError(errors, res));
     }
   } catch {
-    errors.push({ msg: "Please enter all fields" });
+    errors.push({ message: "Please enter all fields" });
   }
   handleError(errors, res);
 }
@@ -57,22 +112,22 @@ function register(req, res) {
   try {
     const { login, email, password } = req.body;
     if (!email || !login || !password) {
-      errors.push({ msg: "Incorrect format" });
+      errors.push({ message: "Incorrect format" });
     } else {
       if (password.length < 6) {
-        errors.push({ msg: "Password must be at least 6 characters" });
+        errors.push({ message: "Password must be at least 6 characters" });
       }
       if (login.length < 6) {
-        errors.push({ msg: "Login must be at least 6 characters" });
+        errors.push({ message: "Login must be at least 6 characters" });
       }
       if (email.match(emailPattern)) {
-        errors.push({ msg: "Not valid email" });
+        errors.push({ message: "Not valid email" });
       }
     }
     if (errors.length == 0) {
       User.findOne({ email: email }).then((user) => {
         if (user) {
-          errors.push({ msg: "Email already exists" });
+          errors.push({ message: "Email already exists" });
         } else {
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(password, salt, (err, hash) => {
@@ -98,7 +153,7 @@ function register(req, res) {
       });
     }
   } catch {
-    errors.push({ msg: "Please enter all fields" });
+    errors.push({ message: "Please enter all fields" });
   }
   handleError(errors, res);
 }
@@ -112,6 +167,7 @@ function logOut(req, res) {
 function handleError(errors, res) {
   if (errors.length > 0) {
     res.status(400).json({
+      message: "There are some problems",
       errors: errors,
     });
   }

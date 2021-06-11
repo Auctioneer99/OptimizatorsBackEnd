@@ -15,6 +15,69 @@ function getGameInfoXML(req, res) {
   res.send(400).json({});
 }
 
+/*
+let routes = [
+  {
+    description: "Создание игры",
+    path: "/game/create",
+    requires: {
+      authorization
+    },
+    accept: {
+      game: Object,
+    },
+    returns: {
+      message: String,
+      game: Object,
+      error: Object,
+    },
+  },
+  {
+    description: "Удаление игры",
+    path: "/game/delete",
+    requires: {
+      authorization
+    },
+    accept: {
+      id: String,
+    },
+    returns: {
+      message: String,
+      game: Object,
+      error: Object,
+    },
+  },
+  {
+    description: "Обновление игры",
+    path: "/game/update",
+    requires: {
+      authorization
+    },
+    accept: {
+      id: String,
+      game: Object,
+    },
+    returns: {
+      message: String,
+      game: Object,
+      error: Object,
+    },
+  },
+  {
+    description: "Информация по игре",
+    path: "/game/",
+    accept: {
+      id: String,
+    },
+    returns: {
+      message: String,
+      game: Object,
+      error: Object,
+    },
+  },
+];
+*/
+
 function getGameInfo(req, res) {
   let gameId = req.params.id;
 
