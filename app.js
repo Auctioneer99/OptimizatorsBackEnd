@@ -32,10 +32,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(authorizer);
 
-app.use("", authRoutes);
-app.use("", gameRoutes);
+app.use("/auth", authRoutes);
+app.use("/game", gameRoutes);
 app.use("/user", userRoutes);
-router.get("/", (req, res) => {
+app.get("/", (req, res) => {
   res.sendFile("index.html");
 });
 

@@ -1,11 +1,11 @@
 import express from "express";
 
 import Game from "../Models/Game.js";
-import { authorized } from "./AuthHelper.js";
+import authHelper from "./AuthHelper.js";
 
 const router = express.Router();
 
-router.post("/create", authorized, createGame);
+router.post("/create", authHelper.authorized, createGame);
 router.post("/:id/xml", getGameInfoXML);
 router.post("/:id", getGameInfo);
 

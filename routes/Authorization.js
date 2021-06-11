@@ -5,16 +5,16 @@ import credentials from "../credentials.js";
 import User from "../Models/User.js";
 import auth from "../libs/Auth.js";
 
-import { authorized, notAuthorized } from "./AuthHelper.js";
+import authHelper from "./AuthHelper.js";
 
 const router = express.Router();
 
 const { ACCESS_TOKEN_ALIVE, REFRESH_TOKEN_ALIVE } = credentials.auth;
 const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 
-router.post("/login", notAuthorized, loginUser);
-router.post("/register", notAuthorized, register);
-router.post("/logout", authorized, logOut);
+router.post("/login", authHelper.notAuthorized, loginUser);
+router.post("/register", authHelper.notAuthorized, register);
+router.post("/logout", authHelper.authorized, logOut);
 
 function loginUser(req, res) {
   let errors = [];

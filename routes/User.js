@@ -1,17 +1,11 @@
 import express from "express";
 
-import { authorized, notAuthorized } from "./AuthHelper.js";
+import authHelper from "./AuthHelper.js";
 
 const router = express.Router();
-router.use(authorized);
+router.use(authHelper.authorized);
 
-router.post("/addgame", addGame);
 router.post("/", getUserProfile);
-
-function addGame(req, res) {
-  req.body.game;
-  Game;
-}
 
 function getUserProfile(req, res) {
   res.status(200).json({
@@ -19,8 +13,6 @@ function getUserProfile(req, res) {
     games: [],
   });
 }
-
-function getDefault(req, res) {}
 
 export default router;
 /*
