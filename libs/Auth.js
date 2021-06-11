@@ -8,6 +8,7 @@ const { ACCESS_SECRET, REFRESH_SECRET } = credentials.auth;
 const mapUserToPayload = (user) => {
   return {
     user: {
+      id: user._id,
       login: user.login,
     },
   };
@@ -19,6 +20,7 @@ const mapUserToHashed = (user) => {
 
 const mapPayloadToUser = (payload) => {
   const user = {
+    id: payload.user.id,
     login: payload.user.login,
   };
 

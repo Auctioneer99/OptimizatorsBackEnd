@@ -23,19 +23,18 @@ function cookieAuthorize(req, res, next) {
         return;
       }
     );
-  } else {
-    if (refreshToken) {
-      updateAccessToken(req, res).then(
-        (_) => {
-          cookieAuthorize(req, res, next);
-          return;
-        },
-        (err) => {
-          next();
-          return;
-        }
-      );
-    }
+  }
+  if (refreshToken) {
+    updateAccessToken(req, res).then(
+      (_) => {
+        cookieAuthorize(req, res, next);
+        return;
+      },
+      (err) => {
+        next();
+        return;
+      }
+    );
   }
 }
 

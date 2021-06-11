@@ -1,9 +1,25 @@
 class PreparingState {
+  _timer = null;
+
+  get HasTimer() {
+    return this._timer != null;
+  }
+  get HasElapsed() {
+    return this._timer.HasElapsed;
+  }
+
   constructor() {}
 
-  update(deltaTime) {}
+  update(deltaTime) {
+    if (this.HasTimer) {
+      this._timer.update(deltaTime);
+      if (this.HasElapsed) {
+        Transition;
+      }
+    }
+  }
 
-  beforeLeave() {}
+  beforeLeave(nextState) {}
 
-  beforeEnter() {}
+  beforeEnter(previousState) {}
 }

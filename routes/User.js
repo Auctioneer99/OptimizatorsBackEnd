@@ -1,9 +1,18 @@
 import express from "express";
+import User from "../Models/User.js";
+
+import { authorized, notAuthorized } from "./AuthHelper";
 
 const router = express.Router();
+router.use(authorized);
 
-router.post("/user", getUserProfile);
-router.get("/", getDefault);
+router.post("/addgame", addGame);
+router.post("/", getUserProfile);
+
+function addGame(req, res) {
+  req.body.game;
+  Game;
+}
 
 function getUserProfile(req, res) {
   res.status(200).json({
@@ -12,9 +21,7 @@ function getUserProfile(req, res) {
   });
 }
 
-function getDefault(req, res) {
-  res.sendFile("index.html");
-}
+function getDefault(req, res) {}
 
 export default router;
 /*

@@ -5,6 +5,8 @@ import credentials from "../credentials.js";
 import User from "../Models/User.js";
 import auth from "../libs/Auth.js";
 
+import { authorized, notAuthorized } from "./AuthHelper";
+
 const router = express.Router();
 
 const { ACCESS_TOKEN_ALIVE, REFRESH_TOKEN_ALIVE } = credentials.auth;
@@ -13,26 +15,6 @@ const emailPattern = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
 router.post("/login", notAuthorized, loginUser);
 router.post("/register", notAuthorized, register);
 router.post("/logout", authorized, logOut);
-
-function authorized(req, res, next) {
-  if (req.user) {
-    next();
-  } else {
-    res.status(401).json({
-      message: "Not authorized",
-    });
-  }
-}
-
-function notAuthorized(req, res, next) {
-  if (!req.user) {
-    next();
-  } else {
-    res.status(403).json({
-      message: "Already authorized",
-    });
-  }
-}
 
 function loginUser(req, res) {
   let errors = [];
@@ -44,23 +26,25 @@ function loginUser(req, res) {
     }
 
     if (errors.length == 0) {
-      User.findOne({ email: email }).then((user, err) => {
-        if (user) {
-          bcrypt.compare(password, user.password).then((same) => {
-            if (same) {
-              setCookies(user, res).status(200).json({
-                message: "Success",
-              });
-            } else {
-              errors.push({ msg: "Incorrect password" });
-              handleError(errors, res);
-            }
-          });
-        } else {
-          errors.push({ msg: "User not found" });
-          errors.push({ msg: err });
-        }
-      }).then(() => handleError(errors, res));
+      User.findOne({ email: email })
+        .then((user, err) => {
+          if (user) {
+            bcrypt.compare(password, user.password).then((same) => {
+              if (same) {
+                setCookies(user, res).status(200).json({
+                  message: "Success",
+                });
+              } else {
+                errors.push({ msg: "Incorrect password" });
+                handleError(errors, res);
+              }
+            });
+          } else {
+            errors.push({ msg: "User not found" });
+            errors.push({ msg: err });
+          }
+        })
+        .then(() => handleError(errors, res));
     }
   } catch {
     errors.push({ msg: "Please enter all fields" });

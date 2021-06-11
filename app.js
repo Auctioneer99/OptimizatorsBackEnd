@@ -26,15 +26,18 @@ app.use(
   })
 );
 //app.use(bodyParser.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(cookieParser());
 app.use(authorizer);
 
-app.use(authRoutes);
-app.use(gameRoutes);
-app.use(userRoutes);
+app.use("", authRoutes);
+app.use("", gameRoutes);
+app.use("/user", userRoutes);
+router.get("/", (req, res) => {
+  res.sendFile("index.html");
+});
 
 mongoose
   .connect(credentials.mongo.CONNECT_URL(), {
