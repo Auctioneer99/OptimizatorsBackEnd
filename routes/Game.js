@@ -33,8 +33,11 @@ function getGameInfo(req, res) {
 }
 
 function createGame(req, res) {
+  console.log(req.body);
+  console.log(req.user);
+
   const newGame = new Game({
-    creator: req.user.id,
+    creator: req.user.user.id,
     gameState: req.body,
     createdAt: Date.now(),
     updatedAt: Date.now(),

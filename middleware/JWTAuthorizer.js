@@ -23,18 +23,19 @@ function cookieAuthorize(req, res, next) {
         return;
       }
     );
-  }
-  if (refreshToken) {
-    updateAccessToken(req, res).then(
-      (_) => {
-        cookieAuthorize(req, res, next);
-        return;
-      },
-      (err) => {
-        next();
-        return;
-      }
-    );
+  } else {
+    if (refreshToken) {
+      updateAccessToken(req, res).then(
+        (_) => {
+          cookieAuthorize(req, res, next);
+          return;
+        },
+        (err) => {
+          next();
+          return;
+        }
+      );
+    }
   }
 }
 
@@ -60,7 +61,7 @@ function updateAccessToken(req, res) {
   return promise;
 }
 
-function verifyAccessToken(req, res) {
+function verifyAccessToken(req, res, next) {
   let promise = new Promise(function (resolve, reject) {
     let authToken = req.cookies.Authorization;
     auth.verifyAccessToken(authToken).then(

@@ -4,10 +4,6 @@ import mongoose from "mongoose";
 const { ObjectId } = mongodb;
 
 let GameSchema = new mongoose.Schema({
-  _id: {
-    type: ObjectId,
-    required: true,
-  },
   creator: {
     type: String,
     required: true,
