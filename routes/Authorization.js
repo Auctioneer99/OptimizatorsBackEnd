@@ -91,7 +91,7 @@ function loginUser(req, res) {
                 });
               } else {
                 errors.push({ message: "Incorrect password" });
-                handleError(errors, res);
+                handleError(errors, req, res);
               }
             });
           } else {
@@ -99,12 +99,12 @@ function loginUser(req, res) {
             errors.push({ message: err });
           }
         })
-        .then(() => handleError(errors, res));
+        .then(() => handleError(errors, req, res));
     }
   } catch {
     errors.push({ message: "Please enter all fields" });
   }
-  handleError(errors, res);
+  handleError(errors, req, res);
 }
 
 function register(req, res) {
@@ -155,7 +155,7 @@ function register(req, res) {
   } catch {
     errors.push({ message: "Please enter all fields" });
   }
-  handleError(errors, res);
+  handleError(errors, req, res);
 }
 
 function logOut(req, res) {
@@ -164,11 +164,12 @@ function logOut(req, res) {
   });
 }
 
-function handleError(errors, res) {
+function handleError(errors, req, res) {
   if (errors.length > 0) {
     res.status(400).json({
       message: "There are some problems",
       errors: errors,
+      request: req.body,
     });
   }
 }
