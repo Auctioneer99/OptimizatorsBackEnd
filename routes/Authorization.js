@@ -96,7 +96,6 @@ function loginUser(req, res) {
             });
           } else {
             errors.push({ message: "User not found" });
-            errors.push({ message: err });
           }
         })
         .then(() => handleError(errors, req, res));
