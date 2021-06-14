@@ -182,12 +182,10 @@ function setCookies(user, res) {
     .cookie("Authorization", authToken, {
       maxAge: ACCESS_TOKEN_ALIVE,
       httpOnly: true,
-      sameSite: true,
     })
     .cookie("Refresh", refreshToken, {
       maxAge: REFRESH_TOKEN_ALIVE,
       httpOnly: true,
-      sameSite: true,
     });
   return res;
 }
