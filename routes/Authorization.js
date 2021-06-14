@@ -120,7 +120,7 @@ function register(req, res) {
       if (login.length < 6) {
         errors.push({ message: "Login must be at least 6 characters" });
       }
-      if (email.match(emailPattern)) {
+      if (email.match(emailPattern) == null) {
         errors.push({ message: "Not valid email" });
       }
     }
