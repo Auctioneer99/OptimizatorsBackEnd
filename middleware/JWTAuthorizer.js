@@ -48,7 +48,9 @@ function updateAccessToken(req, res) {
       (token) => {
         res.cookie("Authorization", token, {
           maxAge: REFRESH_TOKEN_ALIVE,
-          httpOnly: true,
+          httpOnly: false,
+          secure: true,
+          sameSite: "none",
         });
         resolve(token);
       },
