@@ -1,7 +1,11 @@
 const credentials = {
   server: {
     PORT: 2500,
-    ALLOWED_ORIGINS: ["https://optimizators.herokuapp.com"],
+    ALLOWED_ORIGINS: [
+      "https://optimizators.herokuapp.com",
+      "http://localhost:8080",
+      "https://localhost:8080",
+    ],
   },
   mongo: {
     database: "optimizators",
