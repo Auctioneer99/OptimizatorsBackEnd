@@ -5,7 +5,6 @@ import http from "http";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import bodyParser from "body-parser";
 
 import authorizer from "./middleware/JWTAuthorizer.js";
 import userRoutes from "./routes/User.js";
@@ -26,19 +25,8 @@ app.use(
     methods: "GET, POST",
   })
 );
-//app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
-/*
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept"
-  );
-  next();
-});*/
 
 app.use(cookieParser());
 app.use(authorizer);
