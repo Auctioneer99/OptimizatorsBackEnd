@@ -21,6 +21,7 @@ const server = http.Server(app);
 app.use(express.static("./public"));
 app.use(
   cors({
+    credentials: true,
     origin: ALLOWED_ORIGINS,
     methods: "GET, POST",
   })
