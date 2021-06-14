@@ -29,6 +29,7 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+/*
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Credentials", true);
   res.header(
@@ -36,7 +37,7 @@ app.use(function (req, res, next) {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   next();
-});
+});*/
 
 app.use(cookieParser());
 app.use(authorizer);
