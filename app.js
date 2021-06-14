@@ -39,7 +39,7 @@ app.get("/", (req, res) => {
 });
 
 mongoose
-  .connect(credentials.mongo.CONNECT_URL(), {
+  .connect(process.env.MONGO_CONNECT_URL, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })

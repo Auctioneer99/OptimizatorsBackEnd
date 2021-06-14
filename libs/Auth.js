@@ -1,9 +1,9 @@
 import "core-js";
 import "regenerator-runtime";
 import Auth from "node-jwt-auth";
-import credentials from "../credentials.js";
 
-const { ACCESS_SECRET, REFRESH_SECRET } = credentials.auth;
+const ACCESS_SECRET = process.env.ACCESS_SECRET;
+const REFRESH_SECRET = process.env.REFRESH_SECRET;
 
 const mapUserToPayload = (user) => {
   return {
