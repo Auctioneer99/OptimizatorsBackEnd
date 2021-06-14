@@ -7,6 +7,8 @@ function cookieAuthorize(req, res, next) {
   let authToken = req.cookies.Authorization;
   let refreshToken = req.cookies.Refresh;
 
+  console.log(req.cookies);
+
   if (!authToken && !refreshToken) {
     next();
     return;
