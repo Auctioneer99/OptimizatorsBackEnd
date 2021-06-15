@@ -2,7 +2,7 @@ import "core-js";
 import "regenerator-runtime";
 
 import auth from "../libs/Auth.js";
-import credentials from "../credentials";
+import credentials from "../credentials.js";
 
 const { ACCESS_TOKEN_ALIVE } = credentials.auth;
 
