@@ -17,28 +17,22 @@ async function cookieAuthorize(req, res, next) {
     return;
   }
 
-  let updated = false;
-
   if (authToken && refreshToken) {
     try{
       await verifyAccessToken(req, res)
-      updated = true;
       next();
       return;
     }
     catch (ex)
     {
       console.log("Error when verifying access token")
-      console.log(ex)
+      console.log(ex.message)
     }
   } 
-  
-  if (updated == false)
-  {
-    if (refreshToken) {
-      await updateAccessToken(req, res);
-      cookieAuthorize(req, res, next);
-    }
+ 
+  if (refreshToken) {
+    await updateAccessToken(req, res);
+    cookieAuthorize(req, res, next);
   }
 }
 
@@ -60,7 +54,7 @@ async function updateAccessToken(req, res) {
   {
     console.log("Execption when refreshing access token")
     res.clearCookie("Authorization").clearCookie("Refresh");
-    console.log(ex);
+    console.log(ex.message);
   }
 }
 
