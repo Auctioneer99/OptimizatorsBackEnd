@@ -27,6 +27,7 @@ async function cookieAuthorize(req, res, next) {
     {
       console.log("Error when verifying access token")
       console.log(ex.message)
+      delete req.cookies.Authorization;
     }
   } 
  
@@ -49,11 +50,13 @@ async function updateAccessToken(req, res) {
       secure: true,
       sameSite: "none",
     });
+    req.cookies.Authorization = token;
   }
   catch (ex)
   {
     console.log("Execption when refreshing access token")
     res.clearCookie("Authorization").clearCookie("Refresh");
+    req.cookies = {};
     console.log(ex.message);
   }
 }
