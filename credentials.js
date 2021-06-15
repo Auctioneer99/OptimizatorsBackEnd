@@ -8,8 +8,8 @@ const credentials = {
     ],
   },
   auth: {
-    ACCESS_TOKEN_ALIVE: 2 * 60 * 60 * 1000,
-    REFRESH_TOKEN_ALIVE: 24 * 60 * 60 * 1000,
+    ACCESS_TOKEN_ALIVE: 100 * 2 * 60 * 60 * 1000,
+    REFRESH_TOKEN_ALIVE: 100 * 24 * 60 * 60 * 1000,
   },
   game: {
     MAX_GAMES_COUNT: 5,
